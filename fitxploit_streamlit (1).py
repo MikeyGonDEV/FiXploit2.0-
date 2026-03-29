@@ -363,18 +363,29 @@ MAX_INTENTOS      = 3
 # ── Estado de sesión ──────────────────────────────────
 def init_state():
     defaults = {
-        "fase"          : "login",   # login | reto1 | reto2 | reto3 | exito | bloqueado
+        "fase"          : "login",   # login | olvide | reto1 | reto2 | reto3 | exito | bloqueado | salir
         "intentos_login": MAX_INTENTOS,
         "intentos_r1"   : MAX_INTENTOS,
         "intentos_r2"   : MAX_INTENTOS,
         "intentos_r3"   : MAX_INTENTOS,
         "msg"           : "",
-        "msg_tipo"      : "",   # ok | error | pista
+        "msg_tipo"      : "",
         "usuario"       : "",
     }
     for k, v in defaults.items():
         if k not in st.session_state:
             st.session_state[k] = v
+
+def reset_todo():
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+
+def boton_salir():
+    """Botón de salir disponible en cualquier fase excepto login/salir."""
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("🚪 SALIR DEL SISTEMA", key="btn_salir"):
+        st.session_state.fase = "salir"
+        st.rerun()
 
 init_state()
 
@@ -455,6 +466,9 @@ st.markdown("""
 <div class="banner">
   <div class="banner-title">⚽ FITXPLOIT</div>
   <div class="banner-sub">Simulador de Seguridad · Hackea el Sistema</div>
+  <div style="margin-top:0.6rem;font-family:'Rajdhani',sans-serif;font-size:0.8rem;color:rgba(255,215,0,0.55);letter-spacing:3px;text-transform:uppercase;">
+    🟡 Proyecto Coquito Amarillo · Sistema de Autenticación por Niveles
+  </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -468,7 +482,7 @@ fase = st.session_state.fase
 if fase == "login":
     st.markdown("""
     <div class="reto-card">
-      <div class="reto-titulo">🔑 Inicio de Sesión</div>
+      <div class="reto-titulo">🔑 Inicio de Sesión — Autenticación</div>
       <div class="reto-texto">Ingresa tus credenciales para comenzar la misión.</div>
     </div>
     """, unsafe_allow_html=True)
@@ -476,27 +490,81 @@ if fase == "login":
     st.markdown(dots(st.session_state.intentos_login), unsafe_allow_html=True)
     mostrar_msg()
 
-    usuario  = st.text_input("Usuario", placeholder="tu usuario...", key="inp_usuario")
-    password = st.text_input("Contraseña", placeholder="••••••••", type="password", key="inp_password")
+    with st.form(key="form_login", clear_on_submit=False):
+        usuario  = st.text_input("Usuario", placeholder="tu usuario...")
+        password = st.text_input("Contraseña", placeholder="••••••••", type="password")
+        submitted = st.form_submit_button("⚡ INGRESAR AL SISTEMA")
 
-    if st.button("⚡ INGRESAR AL SISTEMA"):
+    if submitted:
         if usuario == USUARIO_CORRECTO and password == PASSWORD_CORRECTA:
-            st.session_state.usuario   = usuario
-            st.session_state.fase      = "reto1"
-            st.session_state.msg       = f"Bienvenido, {usuario}. Iniciando retos..."
-            st.session_state.msg_tipo  = "ok"
+            st.session_state.usuario  = usuario
+            st.session_state.fase     = "reto1"
+            st.session_state.msg      = f"Bienvenido, {usuario}. Iniciando retos..."
+            st.session_state.msg_tipo = "ok"
             st.rerun()
         else:
             st.session_state.intentos_login -= 1
             restantes = st.session_state.intentos_login
             if restantes <= 0:
-                st.session_state.fase     = "bloqueado"
-                st.session_state.msg      = "Inicio de sesión"
+                st.session_state.fase = "bloqueado"
+                st.session_state.msg  = "Inicio de sesión"
                 st.rerun()
             else:
                 st.session_state.msg      = f"Credenciales incorrectas. Intentos restantes: {restantes}"
                 st.session_state.msg_tipo = "error"
                 st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("🔓 Olvidé mi contraseña"):
+        st.session_state.fase     = "olvide"
+        st.session_state.msg      = ""
+        st.session_state.msg_tipo = ""
+        st.rerun()
+
+# ══════════════════════════════════════════════════════
+#  FASE: OLVIDÉ MI CONTRASEÑA
+# ══════════════════════════════════════════════════════
+elif fase == "olvide":
+    st.markdown("""
+    <div class="reto-card">
+      <div class="reto-titulo">🔓 Recuperación de Contraseña</div>
+      <div class="reto-texto">Responde la pregunta de seguridad para restablecer tu acceso.</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    mostrar_msg()
+
+    with st.form(key="form_olvide", clear_on_submit=False):
+        usr      = st.text_input("Usuario", placeholder="tu usuario...")
+        respuesta = st.text_input("¿Nombre de tu equipo favorito?", placeholder="Escribe tu respuesta...")
+        nueva_pw  = st.text_input("Nueva contraseña", placeholder="mínimo 4 caracteres", type="password")
+        submitted = st.form_submit_button("🔄 RESTABLECER CONTRASEÑA")
+
+    if submitted:
+        if usr != USUARIO_CORRECTO:
+            st.session_state.msg      = "Usuario no encontrado en el sistema."
+            st.session_state.msg_tipo = "error"
+            st.rerun()
+        elif respuesta.strip().lower() != "real madrid":
+            st.session_state.msg      = "Respuesta de seguridad incorrecta."
+            st.session_state.msg_tipo = "error"
+            st.rerun()
+        elif len(nueva_pw.strip()) < 4:
+            st.session_state.msg      = "La contraseña debe tener mínimo 4 caracteres."
+            st.session_state.msg_tipo = "error"
+            st.rerun()
+        else:
+            # En producción real aquí se actualizaría la BD
+            st.session_state.msg      = "✅ Contraseña restablecida. Vuelve al inicio de sesión."
+            st.session_state.msg_tipo = "ok"
+            st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("← Volver al inicio de sesión"):
+        st.session_state.fase     = "login"
+        st.session_state.msg      = ""
+        st.session_state.msg_tipo = ""
+        st.rerun()
 
 # ══════════════════════════════════════════════════════
 #  FASE: RETO 1 — LÓGICA Y MATEMÁTICAS
@@ -515,21 +583,14 @@ elif fase == "reto1":
     </div>
     """, unsafe_allow_html=True)
 
-    restantes = st.session_state.intentos_r1
-    st.markdown(dots(restantes), unsafe_allow_html=True)
-
-    if restantes == 2:
-        st.session_state.msg      = "El resultado es mayor que 10."
-        st.session_state.msg_tipo = "pista"
-    elif restantes == 1:
-        st.session_state.msg      = "Está entre 12 y 14. ¡Último intento!"
-        st.session_state.msg_tipo = "pista"
-
+    st.markdown(dots(st.session_state.intentos_r1), unsafe_allow_html=True)
     mostrar_msg()
 
-    resp = st.text_input("🔢 Tu respuesta (número)", placeholder="Escribe el número...", key="inp_r1")
+    with st.form(key="form_r1", clear_on_submit=False):
+        resp      = st.text_input("🔢 Tu respuesta (número)", placeholder="Escribe el número...")
+        submitted = st.form_submit_button("⚡ ENVIAR RESPUESTA")
 
-    if st.button("⚡ ENVIAR RESPUESTA"):
+    if submitted:
         try:
             numero = int(resp.strip())
         except ValueError:
@@ -552,6 +613,8 @@ elif fase == "reto1":
                     st.session_state.msg      = f"Incorrecto. Intentos restantes: {st.session_state.intentos_r1}"
                     st.session_state.msg_tipo = "error"
                     st.rerun()
+
+    boton_salir()
 
 # ══════════════════════════════════════════════════════
 #  FASE: RETO 2 — CIFRADO CÉSAR
@@ -622,21 +685,14 @@ elif fase == "reto2":
     )
     st.markdown("**❓ ¿Cuál es la palabra original de 5 letras?**")
 
-    restantes = st.session_state.intentos_r2
-    st.markdown(dots(restantes), unsafe_allow_html=True)
-
-    if restantes == 2:
-        st.session_state.msg      = 'La palabra empieza con la letra "C".'
-        st.session_state.msg_tipo = "pista"
-    elif restantes == 1:
-        st.session_state.msg      = "Tiene 5 letras. ¡Último intento!"
-        st.session_state.msg_tipo = "pista"
-
+    st.markdown(dots(st.session_state.intentos_r2), unsafe_allow_html=True)
     mostrar_msg()
 
-    resp = st.text_input("🔤 Tu respuesta (palabra)", placeholder="Escribe la palabra...", key="inp_r2")
+    with st.form(key="form_r2", clear_on_submit=False):
+        resp      = st.text_input("🔤 Tu respuesta (palabra)", placeholder="Escribe la palabra...")
+        submitted = st.form_submit_button("⚡ ENVIAR RESPUESTA")
 
-    if st.button("⚡ ENVIAR RESPUESTA"):
+    if submitted:
         if resp.strip().upper() == "CRACK":
             st.session_state.fase     = "reto3"
             st.session_state.msg      = "¡Interceptado! Reto 2 superado."
@@ -652,6 +708,8 @@ elif fase == "reto2":
                 st.session_state.msg      = f"Incorrecto. Intentos restantes: {st.session_state.intentos_r2}"
                 st.session_state.msg_tipo = "error"
                 st.rerun()
+
+    boton_salir()
 
 # ══════════════════════════════════════════════════════
 #  FASE: RETO 3 — BINARIO
@@ -680,9 +738,11 @@ elif fase == "reto3":
     st.markdown(dots(restantes), unsafe_allow_html=True)
     mostrar_msg()
 
-    resp = st.text_input("🔢 Tu respuesta (número decimal)", placeholder="Escribe el número...", key="inp_r3")
+    with st.form(key="form_r3", clear_on_submit=False):
+        resp      = st.text_input("🔢 Tu respuesta (número decimal)", placeholder="Escribe el número...")
+        submitted = st.form_submit_button("⚡ ENVIAR RESPUESTA FINAL")
 
-    if st.button("⚡ ENVIAR RESPUESTA FINAL"):
+    if submitted:
         try:
             numero = int(resp.strip())
         except ValueError:
@@ -705,6 +765,8 @@ elif fase == "reto3":
                     st.session_state.msg_tipo = "error"
                     st.rerun()
 
+    boton_salir()
+
 # ══════════════════════════════════════════════════════
 #  FASE: ÉXITO
 # ══════════════════════════════════════════════════════
@@ -716,16 +778,21 @@ elif fase == "exito":
       <br>
       <div style="font-family:'Rajdhani',sans-serif;color:#c8e6c8;font-size:1rem">
         Bienvenido al sistema FitXploit.<br>
-        El estadio es tuyo. Misión cumplida.
+        🟡 Proyecto Coquito Amarillo — Misión cumplida.
       </div>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🔄 JUGAR DE NUEVO"):
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
-        st.rerun()
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🔐 AUTENTICARSE NUEVAMENTE"):
+            reset_todo()
+            st.rerun()
+    with col2:
+        if st.button("🚪 SALIR DEL SISTEMA"):
+            st.session_state.fase = "salir"
+            st.rerun()
 
 # ══════════════════════════════════════════════════════
 #  FASE: BLOQUEADO
@@ -744,7 +811,33 @@ elif fase == "bloqueado":
     """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🔄 INTENTAR DE NUEVO"):
-        for key in list(st.session_state.keys()):
-            del st.session_state[key]
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🔐 AUTENTICARSE NUEVAMENTE"):
+            reset_todo()
+            st.rerun()
+    with col2:
+        if st.button("🚪 SALIR DEL SISTEMA"):
+            st.session_state.fase = "salir"
+            st.rerun()
+
+# ══════════════════════════════════════════════════════
+#  FASE: SALIR
+# ══════════════════════════════════════════════════════
+elif fase == "salir":
+    st.markdown("""
+    <div class="msg-exito" style="border-color:#ffd700;box-shadow:0 0 30px rgba(255,215,0,0.15);">
+      <div class="msg-exito-titulo" style="color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,0.7);">
+        🟡 SESIÓN CERRADA
+      </div>
+      <div class="msg-exito-sub">
+        Has salido del sistema FitXploit correctamente.<br>
+        Proyecto Coquito Amarillo · Hasta la próxima. ⚽
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("🔐 VOLVER A AUTENTICARSE"):
+        reset_todo()
         st.rerun()
