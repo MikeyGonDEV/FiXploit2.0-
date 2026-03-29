@@ -181,7 +181,11 @@ st.markdown("""
     font-family: 'Rajdhani', sans-serif;
     color: #c8e6c8;
     font-size: 1.05rem;
-    line-height: 1.6;
+    line-height: 1.8;
+    text-align: justify;
+    text-justify: inter-word;
+    word-spacing: 1px;
+    hyphens: auto;
 }
 .reto-codigo {
     font-family: 'Orbitron', monospace;
@@ -451,10 +455,10 @@ st.markdown("""
   <div class="nombre-crack n8">Bellingham</div>
 </div>
 <div class="banner">
-  <div class="banner-title">⚽ FITXPLOIT</div>
-  <div class="banner-sub">Simulador de Seguridad · Hackea el Sistema</div>
-  <div style="margin-top:0.6rem;font-family:'Rajdhani',sans-serif;font-size:0.8rem;color:rgba(255,215,0,0.55);letter-spacing:3px;text-transform:uppercase;">
-    🟡 Proyecto FiXploit · Sistema de Autenticación por Niveles
+  <div class="banner-title">⚽ FITxploit</div>
+  <div class="banner-sub">Simulador de Seguridad Cuántico</div>
+  <div style="margin-top:0.4rem;font-family:'Rajdhani',sans-serif;font-size:0.85rem;color:rgba(0,255,100,0.6);letter-spacing:3px;text-transform:uppercase;">
+    Sistema de Autenticación por Niveles
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -561,9 +565,10 @@ elif fase == "reto1":
     <div class="reto-card">
       <div class="reto-titulo">⚽ Nivel 1 — Razonamiento Lógico-Matemático</div>
       <div class="reto-texto">
-        Un delantero anotó 4 goles por partido durante 5 encuentros.<br>
-        El árbitro anuló la mitad por fuera de juego.<br>
-        El equipo marcó 3 goles adicionales.<br><br>
+        Un delantero anotó 4 goles por partido durante 5 encuentros.
+        El árbitro anuló la mitad por fuera de juego.
+        El equipo marcó 3 goles adicionales.
+        <br><br>
         ❓ <b style="color:#00ff64">¿Cuál es el total de goles válidos?</b>
       </div>
     </div>
@@ -611,8 +616,10 @@ elif fase == "reto2":
     <div class="reto-card">
       <div class="reto-titulo">🔐 Nivel 2 — Descifrado Criptográfico</div>
       <div class="reto-texto">
-        Mensaje interceptado cifrado con método César (+3).<br>
-        Revierte el desplazamiento para identificar la palabra original.<br><br>
+        Mensaje interceptado cifrado con método César, cada letra fue desplazada
+        3 posiciones hacia adelante en el alfabeto. Revierte el desplazamiento
+        para identificar la palabra original.
+        <br><br>
         Mensaje cifrado:
       </div>
       <div class="reto-codigo">F &nbsp;&nbsp; U &nbsp;&nbsp; D &nbsp;&nbsp; F &nbsp;&nbsp; N</div>
@@ -655,9 +662,10 @@ elif fase == "reto3":
     <div class="reto-card">
       <div class="reto-titulo">💻 Nivel 3 — Conversión Binaria a Decimal</div>
       <div class="reto-texto">
-        Secuencia de 8 bits detectada en el registro del sistema.<br>
-        Asigna a cada bit su valor posicional (2⁰ hasta 2⁷, de derecha a izquierda)<br>
-        y suma los valores de las posiciones activas.<br><br>
+        Secuencia de 8 bits detectada en el registro del sistema.
+        Asigna a cada bit su valor posicional (2⁰ hasta 2⁷, de derecha a izquierda)
+        y suma los valores de las posiciones activas.
+        <br><br>
         Secuencia:
       </div>
       <div class="reto-codigo">0 1 0 0 1 0 1 0</div>
@@ -710,7 +718,7 @@ elif fase == "exito":
       <br>
       <div style="font-family:'Rajdhani',sans-serif;color:#c8e6c8;font-size:1rem">
         Bienvenido al sistema FitXploit.<br>
-        🟡 Proyecto Coquito Amarillo — Misión cumplida.
+        Misión cumplida.
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -743,15 +751,13 @@ elif fase == "bloqueado":
     """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("🔐 AUTENTICARSE NUEVAMENTE"):
-            reset_todo()
-            st.rerun()
-    with col2:
-        if st.button("🚪 SALIR DEL SISTEMA"):
-            st.session_state.fase = "salir"
-            st.rerun()
+    if st.button("🔐 AUTENTICARSE NUEVAMENTE", use_container_width=True):
+        reset_todo()
+        st.rerun()
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("🚪 SALIR DEL SISTEMA", use_container_width=True, key="salir_bloqueado"):
+        st.session_state.fase = "salir"
+        st.rerun()
 
 # ══════════════════════════════════════════════════════
 #  FASE: SALIR
@@ -760,16 +766,16 @@ elif fase == "salir":
     st.markdown("""
     <div class="msg-exito" style="border-color:#ffd700;box-shadow:0 0 30px rgba(255,215,0,0.15);">
       <div class="msg-exito-titulo" style="color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,0.7);">
-        🟡 SESIÓN CERRADA
+        SESIÓN CERRADA
       </div>
       <div class="msg-exito-sub">
         Has salido del sistema FitXploit correctamente.<br>
-        Proyecto Coquito Amarillo · Hasta la próxima. ⚽
+        Hasta la próxima. ⚽
       </div>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🔐 VOLVER A AUTENTICARSE"):
+    if st.button("🔐 VOLVER A AUTENTICARSE", use_container_width=True):
         reset_todo()
         st.rerun()
