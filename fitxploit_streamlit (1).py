@@ -664,7 +664,7 @@ elif fase == "reto3":
       <div class="reto-texto">
         Secuencia de 8 bits detectada en el registro del sistema.
         Asigna a cada bit su valor posicional (2⁰ hasta 2⁷, de derecha a izquierda)
-        y suma los valores de las posiciones activas.
+        y suma los valores de las posiciones activas para obtener el valor decimal.
         <br><br>
         Secuencia:
       </div>
