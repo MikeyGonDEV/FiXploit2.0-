@@ -223,19 +223,8 @@ st.markdown("""
     margin-left: 4px;
 }
 
-/* ── Pista ── */
-.pista-box {
-    background: rgba(255,215,0,0.07);
-    border: 1px solid rgba(255,215,0,0.3);
-    border-radius: 3px;
-    padding: 0.6rem 1rem;
-    margin: 0.6rem 0;
-    color: #ffd700;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.95rem;
-}
 
-/* ── Mensajes ── */
+/* ── Divider ── */
 .msg-exito {
     background: linear-gradient(135deg, #0d2d0d, #0a200a);
     border: 1px solid #00ff64;
@@ -401,8 +390,6 @@ def mostrar_msg():
         st.markdown(f'<div style="color:#00ff64;font-family:Rajdhani,sans-serif;font-size:1rem;padding:0.5rem 0">✅ {m}</div>', unsafe_allow_html=True)
     elif t == "error":
         st.markdown(f'<div style="color:#ff4444;font-family:Rajdhani,sans-serif;font-size:1rem;padding:0.5rem 0">❌ {m}</div>', unsafe_allow_html=True)
-    elif t == "pista":
-        st.markdown(f'<div class="pista-box">💡 {m}</div>', unsafe_allow_html=True)
 
 def dots(restantes):
     html = '<div class="intentos-bar">'
