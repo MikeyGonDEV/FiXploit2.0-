@@ -559,13 +559,11 @@ elif fase == "olvide":
 elif fase == "reto1":
     st.markdown("""
     <div class="reto-card">
-      <div class="reto-titulo">⚽ Reto 1 de 3 — Lógica y Matemáticas</div>
+      <div class="reto-titulo">⚽ Reto 1 de 3 — Acceso Nivel 1</div>
       <div class="reto-texto">
-        Un delantero marcó <b style="color:#ffd700">4 goles por partido</b> durante <b style="color:#ffd700">5 partidos</b>.<br>
-        El portero anuló la mitad <b style="color:#ffd700">(÷ 2)</b>.<br>
-        Luego el equipo sumó <b style="color:#ffd700">3 goles más</b>.<br><br>
-        ❓ <b style="color:#00ff64">¿Cuántos goles quedaron en la tabla final?</b><br>
-        <span style="opacity:0.6;font-size:0.9rem">(4 × 5) ÷ 2 + 3 = ?</span>
+        Un delantero marcó 4 goles por partido durante 5 partidos.<br>
+        El portero anuló la mitad. Luego el equipo sumó 3 goles más.<br><br>
+        ❓ <b style="color:#00ff64">¿Cuántos goles quedaron?</b>
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -574,30 +572,30 @@ elif fase == "reto1":
     mostrar_msg()
 
     with st.form(key="form_r1", clear_on_submit=False):
-        resp      = st.text_input("🔢 Tu respuesta (número)", placeholder="Escribe el número...")
-        submitted = st.form_submit_button("⚡ ENVIAR RESPUESTA")
+        resp      = st.text_input("Respuesta", placeholder="...")
+        submitted = st.form_submit_button("⚡ ENVIAR")
 
     if submitted:
         try:
             numero = int(resp.strip())
         except ValueError:
-            st.session_state.msg      = "Solo números enteros, por favor."
+            st.session_state.msg      = "Entrada inválida."
             st.session_state.msg_tipo = "error"
             st.rerun()
         else:
             if numero == 13:
                 st.session_state.fase     = "reto2"
-                st.session_state.msg      = "¡GOL! Reto 1 superado."
+                st.session_state.msg      = "Nivel 1 superado. Acceso parcial concedido."
                 st.session_state.msg_tipo = "ok"
                 st.rerun()
             else:
                 st.session_state.intentos_r1 -= 1
                 if st.session_state.intentos_r1 <= 0:
                     st.session_state.fase = "bloqueado"
-                    st.session_state.msg  = "Reto 1 — Lógica y Matemáticas"
+                    st.session_state.msg  = "Reto 1 — Acceso Nivel 1"
                     st.rerun()
                 else:
-                    st.session_state.msg      = f"Incorrecto. Intentos restantes: {st.session_state.intentos_r1}"
+                    st.session_state.msg      = f"Acceso denegado. Intentos restantes: {st.session_state.intentos_r1}"
                     st.session_state.msg_tipo = "error"
                     st.rerun()
 
@@ -608,91 +606,39 @@ elif fase == "reto1":
 # ══════════════════════════════════════════════════════
 elif fase == "reto2":
 
-    # ── Título del reto ──────────────────────────────────
-    st.markdown('<div class="reto-card"><div class="reto-titulo">🎯 Reto 2 de 3 — Descifra el Código</div></div>', unsafe_allow_html=True)
-
-    # ── Explicación con componentes nativos ──────────────
-    st.markdown("##### 🕵️ El espía envió un mensaje secreto")
-    st.markdown(
-        "Usó el **Cifrado César**: cada letra del abecedario fue "
-        "**movida 3 posiciones hacia adelante**. "
-        "Para descifrarla, debes **retroceder 3 posiciones**."
-    )
-
-    st.markdown("---")
-    st.markdown("##### 🔡 ¿Cómo descifrar letra por letra?")
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown(
-            """
-            <div style="background:rgba(0,255,100,0.07);border:1px solid rgba(0,255,100,0.3);
-                        border-radius:6px;padding:0.8rem;text-align:center;">
-              <div style="color:#888;font-size:0.75rem;letter-spacing:2px">CIFRADA</div>
-              <div style="color:#ffd700;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">F</div>
-              <div style="color:#555;font-size:0.8rem">↓ retrocede 3</div>
-              <div style="color:#00ff64;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">C</div>
-            </div>
-            """, unsafe_allow_html=True)
-    with col2:
-        st.markdown(
-            """
-            <div style="background:rgba(0,255,100,0.07);border:1px solid rgba(0,255,100,0.3);
-                        border-radius:6px;padding:0.8rem;text-align:center;">
-              <div style="color:#888;font-size:0.75rem;letter-spacing:2px">CIFRADA</div>
-              <div style="color:#ffd700;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">U</div>
-              <div style="color:#555;font-size:0.8rem">↓ retrocede 3</div>
-              <div style="color:#00ff64;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">R</div>
-            </div>
-            """, unsafe_allow_html=True)
-    with col3:
-        st.markdown(
-            """
-            <div style="background:rgba(0,255,100,0.07);border:1px solid rgba(0,255,100,0.3);
-                        border-radius:6px;padding:0.8rem;text-align:center;">
-              <div style="color:#888;font-size:0.75rem;letter-spacing:2px">CIFRADA</div>
-              <div style="color:#ffd700;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">D</div>
-              <div style="color:#555;font-size:0.8rem">↓ retrocede 3</div>
-              <div style="color:#00ff64;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">A</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    st.markdown("##### 📡 Mensaje completo interceptado:")
-    st.markdown(
-        '<div class="reto-codigo">F &nbsp;&nbsp; U &nbsp;&nbsp; D &nbsp;&nbsp; F &nbsp;&nbsp; N</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown(
-        "> 💬 **Referencia:** `A B C D E F G H I J K L M N O P Q R S T U V W X Y Z`  \n"
-        "> Ejemplo: la letra **F** retrocede 3 → **E → D → C**"
-    )
-    st.markdown("**❓ ¿Cuál es la palabra original de 5 letras?**")
+    st.markdown("""
+    <div class="reto-card">
+      <div class="reto-titulo">🎯 Reto 2 de 3 — Acceso Nivel 2</div>
+      <div class="reto-texto">
+        Mensaje interceptado. Descifra el código.<br><br>
+      </div>
+      <div class="reto-codigo">F &nbsp;&nbsp; U &nbsp;&nbsp; D &nbsp;&nbsp; F &nbsp;&nbsp; N</div>
+      <br>
+      <div class="reto-texto">❓ <b style="color:#00ff64">¿Cuál es la palabra original?</b></div>
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown(dots(st.session_state.intentos_r2), unsafe_allow_html=True)
     mostrar_msg()
 
     with st.form(key="form_r2", clear_on_submit=False):
-        resp      = st.text_input("🔤 Tu respuesta (palabra)", placeholder="Escribe la palabra...")
-        submitted = st.form_submit_button("⚡ ENVIAR RESPUESTA")
+        resp      = st.text_input("Respuesta", placeholder="...")
+        submitted = st.form_submit_button("⚡ ENVIAR")
 
     if submitted:
         if resp.strip().upper() == "CRACK":
             st.session_state.fase     = "reto3"
-            st.session_state.msg      = "¡Interceptado! Reto 2 superado."
+            st.session_state.msg      = "Nivel 2 superado. Acceso parcial concedido."
             st.session_state.msg_tipo = "ok"
             st.rerun()
         else:
             st.session_state.intentos_r2 -= 1
             if st.session_state.intentos_r2 <= 0:
                 st.session_state.fase = "bloqueado"
-                st.session_state.msg  = "Reto 2 — Cifrado César"
+                st.session_state.msg  = "Reto 2 — Acceso Nivel 2"
                 st.rerun()
             else:
-                st.session_state.msg      = f"Incorrecto. Intentos restantes: {st.session_state.intentos_r2}"
+                st.session_state.msg      = f"Acceso denegado. Intentos restantes: {st.session_state.intentos_r2}"
                 st.session_state.msg_tipo = "error"
                 st.rerun()
 
@@ -704,20 +650,14 @@ elif fase == "reto2":
 elif fase == "reto3":
     st.markdown("""
     <div class="reto-card">
-      <div class="reto-titulo">🧩 Reto 3 de 3 — Puzzle Binario (Final)</div>
+      <div class="reto-titulo">🧩 Reto 3 de 3 — Acceso Nivel Final</div>
       <div class="reto-texto">
-        La base de datos del estadio guarda el número de camiseta<br>
-        del infiltrado en <b style="color:#ffd700">código BINARIO</b>.<br><br>
+        Registro cifrado detectado en la base de datos.<br><br>
         Código:
       </div>
-      <div class="reto-codigo">0 1 0 0 1 0 1 0</div><br>
-      <div class="reto-texto">
-        Posiciones (derecha → izquierda):<br>
-        <span style="color:#ffd700;font-family:'Orbitron',monospace;font-size:0.85rem">
-          128 · 64 · 32 · 16 · 8 · 4 · 2 · 1
-        </span><br><br>
-        ❓ <b style="color:#00ff64">¿A qué número decimal corresponde?</b>
-      </div>
+      <div class="reto-codigo">0 1 0 0 1 0 1 0</div>
+      <br>
+      <div class="reto-texto">❓ <b style="color:#00ff64">¿A qué valor corresponde?</b></div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -726,8 +666,8 @@ elif fase == "reto3":
     mostrar_msg()
 
     with st.form(key="form_r3", clear_on_submit=False):
-        resp      = st.text_input("🔢 Tu respuesta (número decimal)", placeholder="Escribe el número...")
-        submitted = st.form_submit_button("⚡ ENVIAR RESPUESTA FINAL")
+        resp      = st.text_input("Respuesta", placeholder="...")
+        submitted = st.form_submit_button("⚡ ENVIAR")
 
     if submitted:
         try:
@@ -745,10 +685,10 @@ elif fase == "reto3":
                 st.session_state.intentos_r3 -= 1
                 if st.session_state.intentos_r3 <= 0:
                     st.session_state.fase = "bloqueado"
-                    st.session_state.msg  = "Reto 3 — Puzzle Binario"
+                    st.session_state.msg  = "Reto 3 — Acceso Nivel Final"
                     st.rerun()
                 else:
-                    st.session_state.msg      = f"Incorrecto. Intentos restantes: {st.session_state.intentos_r3}"
+                    st.session_state.msg      = f"Acceso denegado. Intentos restantes: {st.session_state.intentos_r3}"
                     st.session_state.msg_tipo = "error"
                     st.rerun()
 
