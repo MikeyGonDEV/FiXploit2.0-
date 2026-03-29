@@ -559,11 +559,12 @@ elif fase == "olvide":
 elif fase == "reto1":
     st.markdown("""
     <div class="reto-card">
-      <div class="reto-titulo">⚽ Reto 1 de 3 — Acceso Nivel 1</div>
+      <div class="reto-titulo">⚽ Nivel 1 — Razonamiento Lógico-Matemático</div>
       <div class="reto-texto">
-        Un delantero marcó 4 goles por partido durante 5 partidos.<br>
-        El portero anuló la mitad. Luego el equipo sumó 3 goles más.<br><br>
-        ❓ <b style="color:#00ff64">¿Cuántos goles quedaron?</b>
+        Un delantero anotó 4 goles por partido durante 5 encuentros.<br>
+        El árbitro anuló la mitad por fuera de juego.<br>
+        El equipo marcó 3 goles adicionales.<br><br>
+        ❓ <b style="color:#00ff64">¿Cuál es el total de goles válidos?</b>
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -608,9 +609,11 @@ elif fase == "reto2":
 
     st.markdown("""
     <div class="reto-card">
-      <div class="reto-titulo">🎯 Reto 2 de 3 — Acceso Nivel 2</div>
+      <div class="reto-titulo">🔐 Nivel 2 — Descifrado Criptográfico</div>
       <div class="reto-texto">
-        Mensaje interceptado. Descifra el código.<br><br>
+        Mensaje interceptado cifrado con método César (+3).<br>
+        Revierte el desplazamiento para identificar la palabra original.<br><br>
+        Mensaje cifrado:
       </div>
       <div class="reto-codigo">F &nbsp;&nbsp; U &nbsp;&nbsp; D &nbsp;&nbsp; F &nbsp;&nbsp; N</div>
       <br>
@@ -650,14 +653,16 @@ elif fase == "reto2":
 elif fase == "reto3":
     st.markdown("""
     <div class="reto-card">
-      <div class="reto-titulo">🧩 Reto 3 de 3 — Acceso Nivel Final</div>
+      <div class="reto-titulo">💻 Nivel 3 — Conversión Binaria a Decimal</div>
       <div class="reto-texto">
-        Registro cifrado detectado en la base de datos.<br><br>
-        Código:
+        Secuencia de 8 bits detectada en el registro del sistema.<br>
+        Asigna a cada bit su valor posicional (2⁰ hasta 2⁷, de derecha a izquierda)<br>
+        y suma los valores de las posiciones activas.<br><br>
+        Secuencia:
       </div>
       <div class="reto-codigo">0 1 0 0 1 0 1 0</div>
       <br>
-      <div class="reto-texto">❓ <b style="color:#00ff64">¿A qué valor corresponde?</b></div>
+      <div class="reto-texto">❓ <b style="color:#00ff64">¿Cuál es su valor en decimal?</b></div>
     </div>
     """, unsafe_allow_html=True)
 
