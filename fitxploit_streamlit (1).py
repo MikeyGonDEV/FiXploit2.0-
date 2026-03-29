@@ -557,37 +557,70 @@ elif fase == "reto1":
 #  FASE: RETO 2 — CIFRADO CÉSAR
 # ══════════════════════════════════════════════════════
 elif fase == "reto2":
-    st.markdown("""
-    <div class="reto-card">
-      <div class="reto-titulo">🎯 Reto 2 de 3 — Descifra el Código</div>
-      <div class="reto-texto">
-        El espía del estadio envió un mensaje secreto.<br>
-        Para ocultarlo usó el <b style="color:#ffd700">Cifrado César</b>:
-        un truco donde cada letra del abecedario se
-        <b style="color:#ffd700">mueve 3 posiciones hacia atrás</b>.<br><br>
 
-        <b style="color:#00ff64">¿Cómo funciona?</b> Mira este ejemplo:<br>
-        <span style="font-family:'Orbitron',monospace;font-size:0.9rem">
-          &nbsp;&nbsp;F → retrocede 3 → C<br>
-          &nbsp;&nbsp;U → retrocede 3 → R<br>
-          &nbsp;&nbsp;D → retrocede 3 → A<br>
-          &nbsp;&nbsp;F → retrocede 3 → C<br>
-          &nbsp;&nbsp;N → retrocede 3 → K
-        </span><br><br>
-        El mensaje cifrado es:
-      </div>
-      <div class="reto-codigo">F &nbsp; U &nbsp; D &nbsp; F &nbsp; N</div>
-      <br>
-      <div class="reto-texto">
-        Aplica la misma lógica a cada letra:<br>
-        <span style="color:#888;font-size:0.9rem">
-          Abecedario: A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>
-          Si la letra cifrada es la F, cuenta 3 hacia atrás: F→E→D→C
-        </span><br><br>
-        ❓ <b style="color:#00ff64">¿Cuál es la palabra original de 5 letras?</b>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # ── Título del reto ──────────────────────────────────
+    st.markdown('<div class="reto-card"><div class="reto-titulo">🎯 Reto 2 de 3 — Descifra el Código</div></div>', unsafe_allow_html=True)
+
+    # ── Explicación con componentes nativos ──────────────
+    st.markdown("##### 🕵️ El espía envió un mensaje secreto")
+    st.markdown(
+        "Usó el **Cifrado César**: cada letra del abecedario fue "
+        "**movida 3 posiciones hacia adelante**. "
+        "Para descifrarla, debes **retroceder 3 posiciones**."
+    )
+
+    st.markdown("---")
+    st.markdown("##### 🔡 ¿Cómo descifrar letra por letra?")
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown(
+            """
+            <div style="background:rgba(0,255,100,0.07);border:1px solid rgba(0,255,100,0.3);
+                        border-radius:6px;padding:0.8rem;text-align:center;">
+              <div style="color:#888;font-size:0.75rem;letter-spacing:2px">CIFRADA</div>
+              <div style="color:#ffd700;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">F</div>
+              <div style="color:#555;font-size:0.8rem">↓ retrocede 3</div>
+              <div style="color:#00ff64;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">C</div>
+            </div>
+            """, unsafe_allow_html=True)
+    with col2:
+        st.markdown(
+            """
+            <div style="background:rgba(0,255,100,0.07);border:1px solid rgba(0,255,100,0.3);
+                        border-radius:6px;padding:0.8rem;text-align:center;">
+              <div style="color:#888;font-size:0.75rem;letter-spacing:2px">CIFRADA</div>
+              <div style="color:#ffd700;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">U</div>
+              <div style="color:#555;font-size:0.8rem">↓ retrocede 3</div>
+              <div style="color:#00ff64;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">R</div>
+            </div>
+            """, unsafe_allow_html=True)
+    with col3:
+        st.markdown(
+            """
+            <div style="background:rgba(0,255,100,0.07);border:1px solid rgba(0,255,100,0.3);
+                        border-radius:6px;padding:0.8rem;text-align:center;">
+              <div style="color:#888;font-size:0.75rem;letter-spacing:2px">CIFRADA</div>
+              <div style="color:#ffd700;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">D</div>
+              <div style="color:#555;font-size:0.8rem">↓ retrocede 3</div>
+              <div style="color:#00ff64;font-size:1.8rem;font-family:'Orbitron',monospace;font-weight:900">A</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    st.markdown("##### 📡 Mensaje completo interceptado:")
+    st.markdown(
+        '<div class="reto-codigo">F &nbsp;&nbsp; U &nbsp;&nbsp; D &nbsp;&nbsp; F &nbsp;&nbsp; N</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown(
+        "> 💬 **Referencia:** `A B C D E F G H I J K L M N O P Q R S T U V W X Y Z`  \n"
+        "> Ejemplo: la letra **F** retrocede 3 → **E → D → C**"
+    )
+    st.markdown("**❓ ¿Cuál es la palabra original de 5 letras?**")
 
     restantes = st.session_state.intentos_r2
     st.markdown(dots(restantes), unsafe_allow_html=True)
