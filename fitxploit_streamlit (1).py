@@ -454,7 +454,7 @@ st.markdown("""
   <div class="banner-title">⚽ FITXPLOIT</div>
   <div class="banner-sub">Simulador de Seguridad · Hackea el Sistema</div>
   <div style="margin-top:0.6rem;font-family:'Rajdhani',sans-serif;font-size:0.8rem;color:rgba(255,215,0,0.55);letter-spacing:3px;text-transform:uppercase;">
-    🟡 Proyecto Coquito Amarillo · Sistema de Autenticación por Niveles
+    🟡 Proyecto FiXploit · Sistema de Autenticación por Niveles
   </div>
 </div>
 """, unsafe_allow_html=True)
