@@ -17,30 +17,102 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap');
 
-/* ── Fondo campo de fútbol ── */
+/* ── Fondo oscuro base ── */
 .stApp {
-    background-color: #1a4a1a;
-    background-image:
-        /* Círculo central */
-        radial-gradient(circle at 50% 50%, transparent 8%, rgba(255,255,255,0.06) 8%, rgba(255,255,255,0.06) 9%, transparent 9%),
-        /* Punto central */
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0.4%, transparent 0.4%),
-        /* Línea central horizontal */
-        linear-gradient(to bottom, transparent 49.6%, rgba(255,255,255,0.07) 49.6%, rgba(255,255,255,0.07) 50.4%, transparent 50.4%),
-        /* Franjas verticales del césped */
-        repeating-linear-gradient(
-            90deg,
-            rgba(0,0,0,0.06) 0px,
-            rgba(0,0,0,0.06) 80px,
-            transparent 80px,
-            transparent 160px
-        ),
-        /* Degradado profundidad campo */
-        radial-gradient(ellipse at 50% 0%,   rgba(0,80,0,0.6) 0%, transparent 60%),
-        radial-gradient(ellipse at 50% 100%, rgba(0,60,0,0.6) 0%, transparent 60%),
-        radial-gradient(ellipse at 50% 50%,  rgba(20,100,20,0.3) 0%, transparent 80%);
+    background: #060a06;
     font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
 }
+
+/* ── Capas de ambiente ── */
+.stars-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(circle at 15% 25%, rgba(0,255,100,0.07) 0%, transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(255,215,0,0.06) 0%, transparent 38%),
+        radial-gradient(circle at 50% 95%, rgba(0,180,255,0.04) 0%, transparent 30%),
+        radial-gradient(circle at 70% 10%, rgba(255,80,0,0.04)  0%, transparent 28%);
+}
+
+/* ── Balones flotantes ── */
+.balls-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+@keyframes subirBalon {
+    0%   { transform: translateY(105vh) rotate(0deg);    opacity: 0;   }
+    8%   { opacity: 0.6; }
+    92%  { opacity: 0.6; }
+    100% { transform: translateY(-10vh) rotate(900deg);  opacity: 0;   }
+}
+@keyframes subirBalon2 {
+    0%   { transform: translateY(105vh) rotate(0deg);    opacity: 0;   }
+    12%  { opacity: 0.5; }
+    88%  { opacity: 0.5; }
+    100% { transform: translateY(-10vh) rotate(-720deg); opacity: 0;   }
+}
+
+.ball {
+    position: absolute;
+    bottom: -80px;
+    animation: subirBalon linear infinite;
+    filter: drop-shadow(0 0 10px rgba(0,255,100,0.5));
+}
+
+.b1  { left:3%;  font-size:2.6rem; animation-duration:13s; animation-delay:0s;  animation-name:subirBalon;  }
+.b2  { left:9%;  font-size:1.7rem; animation-duration:18s; animation-delay:2s;  animation-name:subirBalon2; }
+.b3  { left:15%; font-size:3.4rem; animation-duration:11s; animation-delay:5s;  animation-name:subirBalon;  }
+.b4  { left:22%; font-size:1.9rem; animation-duration:21s; animation-delay:1s;  animation-name:subirBalon2; }
+.b5  { left:29%; font-size:2.9rem; animation-duration:15s; animation-delay:8s;  animation-name:subirBalon;  }
+.b6  { left:35%; font-size:1.5rem; animation-duration:10s; animation-delay:3s;  animation-name:subirBalon2; }
+.b7  { left:42%; font-size:3.9rem; animation-duration:23s; animation-delay:11s; animation-name:subirBalon;  }
+.b8  { left:48%; font-size:2.1rem; animation-duration:14s; animation-delay:4s;  animation-name:subirBalon2; }
+.b9  { left:55%; font-size:2.7rem; animation-duration:12s; animation-delay:7s;  animation-name:subirBalon;  }
+.b10 { left:62%; font-size:1.8rem; animation-duration:19s; animation-delay:9s;  animation-name:subirBalon2; }
+.b11 { left:68%; font-size:3.1rem; animation-duration:16s; animation-delay:13s; animation-name:subirBalon;  }
+.b12 { left:74%; font-size:2.0rem; animation-duration:22s; animation-delay:6s;  animation-name:subirBalon2; }
+.b13 { left:80%; font-size:3.5rem; animation-duration:13s; animation-delay:15s; animation-name:subirBalon;  }
+.b14 { left:86%; font-size:1.6rem; animation-duration:20s; animation-delay:10s; animation-name:subirBalon2; }
+.b15 { left:92%; font-size:2.8rem; animation-duration:11s; animation-delay:17s; animation-name:subirBalon;  }
+.b16 { left:12%; font-size:2.3rem; animation-duration:25s; animation-delay:19s; animation-name:subirBalon2; }
+.b17 { left:57%; font-size:1.9rem; animation-duration:16s; animation-delay:22s; animation-name:subirBalon;  }
+.b18 { left:38%; font-size:3.7rem; animation-duration:18s; animation-delay:24s; animation-name:subirBalon2; }
+
+/* ── Nombres de cracks flotando ── */
+@keyframes subirNombre {
+    0%   { transform: translateY(105vh); opacity: 0;    }
+    10%  { opacity: 0.13; }
+    90%  { opacity: 0.13; }
+    100% { transform: translateY(-8vh);  opacity: 0;    }
+}
+.nombre-crack {
+    position: absolute;
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    color: #ffd700;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    pointer-events: none;
+    animation: subirNombre linear infinite;
+    white-space: nowrap;
+}
+.n1 { font-size:1.0rem; left:2%;  animation-duration:28s; animation-delay:0s;  }
+.n2 { font-size:0.8rem; left:18%; animation-duration:33s; animation-delay:6s;  }
+.n3 { font-size:1.2rem; left:38%; animation-duration:24s; animation-delay:12s; }
+.n4 { font-size:0.9rem; left:58%; animation-duration:30s; animation-delay:4s;  }
+.n5 { font-size:1.1rem; left:74%; animation-duration:27s; animation-delay:16s; }
+.n6 { font-size:0.75rem;left:88%; animation-duration:35s; animation-delay:9s;  }
+.n7 { font-size:1.3rem; left:48%; animation-duration:22s; animation-delay:20s; }
+.n8 { font-size:0.85rem;left:8%;  animation-duration:29s; animation-delay:14s; }
 
 /* ── Ocultar elementos de Streamlit ── */
 #MainMenu, footer, header { visibility: hidden; }
@@ -356,9 +428,30 @@ def barra_progreso():
     st.markdown(html, unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════
-#  BANNER
+#  BALONES FLOTANTES + BANNER
 # ══════════════════════════════════════════════════════
 st.markdown("""
+<div class="stars-bg"></div>
+<div class="balls-bg">
+  <div class="ball b1">⚽</div><div class="ball b2">🏆</div>
+  <div class="ball b3">⚽</div><div class="ball b4">🥅</div>
+  <div class="ball b5">⚽</div><div class="ball b6">🏅</div>
+  <div class="ball b7">⚽</div><div class="ball b8">🥇</div>
+  <div class="ball b9">⚽</div><div class="ball b10">🏆</div>
+  <div class="ball b11">⚽</div><div class="ball b12">🎽</div>
+  <div class="ball b13">⚽</div><div class="ball b14">🏆</div>
+  <div class="ball b15">⚽</div><div class="ball b16">🥅</div>
+  <div class="ball b17">⚽</div><div class="ball b18">🏅</div>
+
+  <div class="nombre-crack n1">Messi</div>
+  <div class="nombre-crack n2">Ronaldo</div>
+  <div class="nombre-crack n3">Mbappé</div>
+  <div class="nombre-crack n4">Vinicius</div>
+  <div class="nombre-crack n5">Haaland</div>
+  <div class="nombre-crack n6">Neymar</div>
+  <div class="nombre-crack n7">Pedri</div>
+  <div class="nombre-crack n8">Bellingham</div>
+</div>
 <div class="banner">
   <div class="banner-title">⚽ FITXPLOIT</div>
   <div class="banner-sub">Simulador de Seguridad · Hackea el Sistema</div>
@@ -468,14 +561,31 @@ elif fase == "reto2":
     <div class="reto-card">
       <div class="reto-titulo">🎯 Reto 2 de 3 — Descifra el Código</div>
       <div class="reto-texto">
-        Interceptamos una comunicación cifrada con<br>
-        <b style="color:#ffd700">Cifrado César desplazamiento +3</b>.<br>
-        Cada letra fue movida 3 posiciones hacia adelante.<br>
-        Ejemplo: <b style="color:#ffd700">A→D &nbsp; B→E &nbsp; C→F</b><br><br>
-        Mensaje cifrado:
+        El espía del estadio envió un mensaje secreto.<br>
+        Para ocultarlo usó el <b style="color:#ffd700">Cifrado César</b>:
+        un truco donde cada letra del abecedario se
+        <b style="color:#ffd700">mueve 3 posiciones hacia atrás</b>.<br><br>
+
+        <b style="color:#00ff64">¿Cómo funciona?</b> Mira este ejemplo:<br>
+        <span style="font-family:'Orbitron',monospace;font-size:0.9rem">
+          &nbsp;&nbsp;F → retrocede 3 → C<br>
+          &nbsp;&nbsp;U → retrocede 3 → R<br>
+          &nbsp;&nbsp;D → retrocede 3 → A<br>
+          &nbsp;&nbsp;F → retrocede 3 → C<br>
+          &nbsp;&nbsp;N → retrocede 3 → K
+        </span><br><br>
+        El mensaje cifrado es:
       </div>
-      <div class="reto-codigo">F U D F N</div><br>
-      <div class="reto-texto">❓ <b style="color:#00ff64">¿Cuál es la palabra original?</b></div>
+      <div class="reto-codigo">F &nbsp; U &nbsp; D &nbsp; F &nbsp; N</div>
+      <br>
+      <div class="reto-texto">
+        Aplica la misma lógica a cada letra:<br>
+        <span style="color:#888;font-size:0.9rem">
+          Abecedario: A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>
+          Si la letra cifrada es la F, cuenta 3 hacia atrás: F→E→D→C
+        </span><br><br>
+        ❓ <b style="color:#00ff64">¿Cuál es la palabra original de 5 letras?</b>
+      </div>
     </div>
     """, unsafe_allow_html=True)
 
